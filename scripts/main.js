@@ -103,7 +103,6 @@ function highlightHash() {
 function ratioChecker() {
   // There is absolutely a better way to implement the below function,
   // but it's getting late and I can't think of it right now.
-  // Tomorrow I will look at that and vomit on myself. Promise.
   if (currentRatio < 3) {
     $("#wcag-aa-large").css({"background-color":"#CF3737"})
     $("#wcag-aa-small").css({"background-color":"#CF3737"})
