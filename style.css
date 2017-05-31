@@ -107,7 +107,7 @@ label {
   margin-right: 20px;
   display: inline-block;
   width: 140px;
-  height: 140px;
+  height: 150px;
   text-align: center;
   vertical-align: top;
   position: relative;
@@ -116,7 +116,7 @@ label {
 .check-icon-container {
   margin: 0 auto;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -134,11 +134,13 @@ label {
 }
 
 .point-sizes {
+  display: inline-block;
+  background-color: #E9E9E9;
   margin-top: 7px;
   font-weight: 300;
   font-size: .65em;
   color: #565656;
-  padding: 2px;
+  padding: 3px 5px;
   border-radius: 5px;
 }
 
