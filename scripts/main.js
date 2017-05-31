@@ -1,8 +1,7 @@
 $(document).ready(function() {
   attachListeners()
-  setColorPicker()
-  backgroundLum = getLum(hexToRgb("#F9F9F9"))
-  foregroundLum = getLum(hexToRgb("#030303"))
+  setGlobalColors()
+  setGlobalVars()
 })
 
 function attachListeners() {
@@ -29,59 +28,61 @@ function attachListeners() {
   })
 }
 
-function setColorPicker() {
-  document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
-  document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
+function setGlobalColors() {
+  foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
+  backgroundColor = document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
 }
 
+function setGlobalVars() {
+  backgroundLum = getLum(hexToRgb("#F9F9F9"))
+  foregroundLum = getLum(hexToRgb("#030303"))
 
-// Foreground currently handles typing color words, hex, or rbg, but clumbsily.
-// Background does not, because I don't want to repeat my sloppy foreground code.
-// Also, I think the 'handleTyping' methods as well as the 'handlePicker' methods
+  aaLarge = $("#aa-large")
+  aaSmall = $("#aa-small")
+  aaaLarge = $("#aaa-large")
+  aaaSmall = $("#aaa-small")
+
+  aaLargeIcon = document.getElementById("aa-large-icon")
+  aaSmallIcon = document.getElementById("aa-small-icon")
+  aaaLargeIcon = document.getElementById("aaa-large-icon")
+  aaaSmallIcon = document.getElementById("aaa-small-icon")
+}
+
+// I think the 'handleTyping' functions as well as the 'handlePicker' functions
 // will probably end up being consolidated, (I.E. instead of having 2 for back and
 // 2 for front, just have 2 total that each respond to whichever event called it.)
-
-
 
 // Foreground stuff
 
 function handleForegroundTyping() {
-  var color = $('#foreground-input').val()
-  $('body, h1, h2, h3').css({"color": color})
-  setColorPicker()
-
-  // TODO: The function below needs to get changed at some point. Going from jQuery interpreted
-  // CSS through the rgbToHex then AGAIN back to a different form of RGB just
-  // so that it works with the previously defined function is stupid. Gotta take care of this.
-
-  foregroundLum = getLum(hexToRgb(rgbToHex($('h1').css('color'))))
+  $('body, h1, h2, h3').css({"color": $('#foreground-input').val()})
+  setGlobalColors()
+  foregroundLum = getLum(hexToRgb(foregroundColor))
   setRatio()
 }
 
 function handleForegroundPicker(event) {
-  var foregroundValue = event.currentTarget.value
-  foregroundLum = getLum(hexToRgb(foregroundValue))
-  $('body, h1, h2, h3').css({"color": foregroundValue})
-  document.getElementById('foreground-input').value = foregroundValue.substr(1)
+  foregroundColor = event.currentTarget.value
+  foregroundLum = getLum(hexToRgb(foregroundColor))
+  $('body, h1, h2, h3').css({"color": foregroundColor})
+  document.getElementById('foreground-input').value = foregroundColor.substr(1)
   setRatio()
 }
 
 // Background stuff
 
 function handleBackgroundTyping() {
-  var color = $('#background-input').val()
-  $('body').css({"background-color": color})
-  setColorPicker()
-
-  backgroundLum = getLum(hexToRgb(rgbToHex($('body').css('background-color'))))
+  $('body').css({"background-color": $('#background-input').val()})
+  setGlobalColors()
+  backgroundLum = getLum(hexToRgb(backgroundColor))
   setRatio()
 }
 
 function handleBackgroundPicker(event) {
-  var backgroundValue = event.currentTarget.value
-  backgroundLum = getLum(hexToRgb(backgroundValue))
-  $('body').css({"background-color": backgroundValue})
-  document.getElementById('background-input').value = backgroundValue.substr(1)
+  backgroundColor = event.currentTarget.value
+  backgroundLum = getLum(hexToRgb(backgroundColor))
+  $('body').css({"background-color": backgroundColor})
+  document.getElementById('background-input').value = backgroundColor.substr(1)
   setRatio()
 }
 
@@ -97,50 +98,46 @@ function blurInput(event) {
   event.currentTarget.parentElement.firstElementChild.style.cssText = ''
 }
 
-function highlightHash() {
-  alert('hi')
-}
-
-
 function ratioChecker() {
   // There is absolutely a better way to implement the below function,
   // but it's getting late and I can't think of it right now.
+
   if (currentRatio < 3) {
-    $("#wcag-aa-large").css({"background-color":"#CF3737"})
-    $("#wcag-aa-small").css({"background-color":"#CF3737"})
-    $("#wcag-aaa-large").css({"background-color":"#CF3737"})
-    $("#wcag-aaa-small").css({"background-color":"#CF3737"})
-    document.getElementById("aa-large-pic").setAttribute("src","images/x.svg")
-    document.getElementById("aa-small-pic").setAttribute("src","images/x.svg")
-    document.getElementById("aaa-large-pic").setAttribute("src","images/x.svg")
-    document.getElementById("aaa-small-pic").setAttribute("src","images/x.svg")
+    aaLarge.css({"background-color":"#CF3737"})
+    aaSmall.css({"background-color":"#CF3737"})
+    aaaLarge.css({"background-color":"#CF3737"})
+    aaaSmall.css({"background-color":"#CF3737"})
+    aaLargeIcon.setAttribute("src","images/x.svg")
+    aaSmallIcon.setAttribute("src","images/x.svg")
+    aaaLargeIcon.setAttribute("src","images/x.svg")
+    aaaSmallIcon.setAttribute("src","images/x.svg")
   } else if (currentRatio < 4.5) {
-    $("#wcag-aa-large").css({"background-color":"#81C70C"})
-    $("#wcag-aa-small").css({"background-color":"#CF3737"})
-    $("#wcag-aaa-large").css({"background-color":"#CF3737"})
-    $("#wcag-aaa-small").css({"background-color":"#CF3737"})
-    document.getElementById("aa-large-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aa-small-pic").setAttribute("src","images/x.svg")
-    document.getElementById("aaa-large-pic").setAttribute("src","images/x.svg")
-    document.getElementById("aaa-small-pic").setAttribute("src","images/x.svg")
+    aaLarge.css({"background-color":"#81C70C"})
+    aaSmall.css({"background-color":"#CF3737"})
+    aaaLarge.css({"background-color":"#CF3737"})
+    aaaSmall.css({"background-color":"#CF3737"})
+    aaLargeIcon.setAttribute("src","images/check.svg")
+    aaSmallIcon.setAttribute("src","images/x.svg")
+    aaaLargeIcon.setAttribute("src","images/x.svg")
+    aaaSmallIcon.setAttribute("src","images/x.svg")
   } else if (currentRatio < 7.1) {
-    $("#wcag-aa-large").css({"background-color":"#81C70C"})
-    $("#wcag-aa-small").css({"background-color":"#81C70C"})
-    $("#wcag-aaa-large").css({"background-color":"#81C70C"})
-    $("#wcag-aaa-small").css({"background-color":"#CF3737"})
-    document.getElementById("aa-large-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aa-small-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aaa-large-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aaa-small-pic").setAttribute("src","images/x.svg")
+    aaLarge.css({"background-color":"#81C70C"})
+    aaSmall.css({"background-color":"#81C70C"})
+    aaaLarge.css({"background-color":"#81C70C"})
+    aaaSmall.css({"background-color":"#CF3737"})
+    aaLargeIcon.setAttribute("src","images/check.svg")
+    aaSmallIcon.setAttribute("src","images/check.svg")
+    aaaLargeIcon.setAttribute("src","images/check.svg")
+    aaaSmallIcon.setAttribute("src","images/x.svg")
   } else {
-    $("#wcag-aa-large").css({"background-color":"#81C70C"})
-    $("#wcag-aa-small").css({"background-color":"#81C70C"})
-    $("#wcag-aaa-large").css({"background-color":"#81C70C"})
-    $("#wcag-aaa-small").css({"background-color":"#81C70C"})
-    document.getElementById("aa-large-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aa-small-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aaa-large-pic").setAttribute("src","images/check.svg")
-    document.getElementById("aaa-small-pic").setAttribute("src","images/check.svg")
+    aaLarge.css({"background-color":"#81C70C"})
+    aaSmall.css({"background-color":"#81C70C"})
+    aaaLarge.css({"background-color":"#81C70C"})
+    aaaSmall.css({"background-color":"#81C70C"})
+    aaLargeIcon.setAttribute("src","images/check.svg")
+    aaSmallIcon.setAttribute("src","images/check.svg")
+    aaaLargeIcon.setAttribute("src","images/check.svg")
+    aaaSmallIcon.setAttribute("src","images/check.svg")
   }
 }
 

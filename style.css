@@ -34,6 +34,13 @@ h3 {
   color: #030303;
 }
 
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
 p {
   text-align: center;
   margin: 0;
@@ -46,13 +53,6 @@ input {
 
 input:focus {
   outline: none;
-}
-
-.inputs span {
-  font-size: 1.25em;
-  color: #E8E8E8;
-  font-weight: 300;
-  padding: 5px;
 }
 
 label {
@@ -79,6 +79,14 @@ label {
   margin-bottom: 40px;
 }
 
+.inputs span {
+  display: inline-block;
+  font-size: 1.25em;
+  color: #E8E8E8;
+  font-weight: 300;
+  margin-left: 5px;
+}
+
 .input-div {
   display: inline-block;
 }
@@ -90,6 +98,7 @@ label {
   margin-right: 8px;
   padding: 13px;
   width: 220px;
+  max-height: 52px;
 }
 
 .color-picker {
@@ -151,13 +160,6 @@ label {
 footer {
   margin-top: 40px;
   text-align: center;
-}
-
-footer a {
-  display: inline-block;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s ease;
 }
 
 footer a::after {
