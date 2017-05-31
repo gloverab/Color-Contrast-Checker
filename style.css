@@ -168,7 +168,7 @@ footer a::after {
 }
 
 footer a:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
 footer span {
