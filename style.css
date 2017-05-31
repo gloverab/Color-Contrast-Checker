@@ -1,4 +1,6 @@
-/*Disclaimer!!! This is currently completely unresponsive.*/
+/*Disclaimer!!! This is currently completely unresponsive. It has
+also only been tested in CHROME. Will update and optimize for Firefox
+and Safari in the nearish future, maybe.*/
 
 /*The global styles especially could perhaps use some consolidation,
 although each element is pretty unique. I'd like to toy around with it.*/
@@ -29,7 +31,7 @@ h3 {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 1em;
-  color: #565656;
+  color: #030303;
 }
 
 p {
@@ -149,6 +151,65 @@ footer {
   text-align: center;
 }
 
+footer a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+footer a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 1px;
+  background: #000;
+  transition: width .2s;
+}
+
+footer a:hover::after {
+    width: 100%;
+}
+
 footer span {
   font-family: 'AbrilFatFace-Regular', sans-serif;
+}
+
+/*This barely does anything other than make it not a TOTAL eyesore. Will
+update in days to come.*/
+
+@media screen and (max-width: 645px) {
+
+  body {
+    text-align: center;
+  }
+
+  .app {
+    margin-top: 0;
+  }
+
+  .wrapper {
+    width: 375px;
+  }
+
+  .inputs {
+    margin-bottom: 20px;
+  }
+
+  .input-div {
+    margin-bottom: 30px;
+  }
+
+  .color-picker {
+    margin-right: 0;
+  }
+
+  .result-box {
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+
+  footer {
+    margin-bottom: 20px;
+  }
 }
