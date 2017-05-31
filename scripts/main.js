@@ -71,8 +71,10 @@ function handleForegroundPicker(event) {
 function handleBackgroundTyping() {
   var color = $('#background-input').val()
   $('body').css({"background-color": color})
-  // setBackgroundColor(color)
   setColorPicker()
+
+  backgroundLum = getLum(hexToRgb(rgbToHex($('body').css('background-color'))))
+  setRatio()
 }
 
 function handleBackgroundPicker(event) {
