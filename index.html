@@ -1,0 +1,88 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Color Contrast Checker by Chris and Alex</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto:300,400,500,600,700" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript" src="scripts/main.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="app">
+
+      <h1>Color Contrast Checker</h1>
+      <h3>A site to help you check your contrast.</h3>
+
+      <div class="inputs">
+
+        <div class="foreground input-div">
+          <label>Foreground Color</label><br>
+          <div class="input-container bordered" id="foreground-input-container">
+            <span>#</span>
+            <input type="text" class="text-color" id="foreground-input">
+          </div>
+          <input type="color" class="color-picker bordered" id="foreground-color-picker">
+        </div>
+
+        <div class="background input-div">
+          <label>Background Color</label><br>
+          <div class="input-container bordered">
+            <span>#</span>
+            <input type="text" class="text-color" id="background-input">
+          </div>
+          <input type="color" class="color-picker bordered last" id="background-color-picker">
+        </div>
+
+      </div>
+
+      <label>Contrast Ratio</label>
+      <h2><span id="ratio-to-change">0.00</span><span> : </span>1</h2>
+
+      <div class="result-boxes">
+
+        <div class="result-box bordered">
+          <div class="check-icon-container" id="wcag-aa-small">
+            <img src="images/check.svg" class="checkbox" id="aa-small-pic"><br>
+          </div>
+          <p class="test-type">WCAG AA</p>
+          <p class="point-sizes">Point sizes below 18</p>
+        </div>
+
+        <div class="result-box bordered">
+          <div class="check-icon-container" id="wcag-aaa-small">
+            <img src="images/check.svg" class="checkbox" id="aaa-small-pic">
+          </div>
+          <p class="test-type">WCAG AAA</p>
+          <p class="point-sizes">Point sizes below 18</p>
+        </div>
+
+        <div class="result-box bordered">
+          <div class="check-icon-container" id="wcag-aa-large">
+            <img src="images/check.svg" class="checkbox" id="aa-large-pic">
+          </div>
+          <p class="test-type">WCAG AA</p>
+          <p class="point-sizes">Point sizes above 18</p>
+        </div>
+
+        <div class="result-box bordered last">
+          <div class="check-icon-container" id="wcag-aaa-large">
+            <img src="images/check.svg" class="checkbox" id="aaa-large-pic">
+          </div>
+          <p class="test-type">WCAG AAA</p>
+          <p class="point-sizes">Point sizes above 18</p>
+        </div>
+
+      </div>
+
+      <footer>
+        <h3>By Alex <span>&</span> Chris</h3>
+      </footer>
+
+    </div>
+  </div>
+</body>
+</html>

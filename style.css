@@ -1,0 +1,154 @@
+/*Disclaimer!!! This is currently completely unresponsive.*/
+
+/*The global styles especially could perhaps use some consolidation,
+although each element is pretty unique. I'd like to toy around with it.*/
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #F9F9F9;
+  font-family: 'Roboto',sans-serif;
+}
+
+h1, h2 {
+  margin: 0;
+  font-family: 'AbrilFatFace-Regular', sans-serif;
+  color: #030303;
+}
+
+h1 {
+  font-size: 3.125em;
+}
+
+h2 {
+  font-size: 2.25em;
+}
+
+h3 {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  color: #565656;
+}
+
+p {
+  text-align: center;
+  margin: 0;
+}
+
+input {
+  border: none;
+  font-size: 1em;
+}
+
+input:focus {
+  outline: none;
+}
+
+.inputs span {
+  font-size: 1.25em;
+  color: #E8E8E8;
+  font-weight: 300;
+  padding: 5px;
+}
+
+label {
+  font-size: .75em;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 645px;
+}
+
+.app {
+  margin-top: 100px;
+}
+
+.bordered {
+  background-color: white;
+  border: 1px solid #E8E8E8;
+  border-radius: 5px;
+}
+
+.inputs {
+  margin-top: 35px;
+  margin-bottom: 40px;
+}
+
+.input-div {
+  display: inline-block;
+}
+
+.input-container {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 8px;
+  margin-right: 8px;
+  padding: 13px;
+  width: 220px;
+}
+
+.color-picker {
+  vertical-align: bottom;
+  width: 52px;
+  height: 52px;
+  margin-right: 16px;
+}
+
+.result-boxes {
+  margin-top: 35px;
+}
+
+.result-box {
+  margin-right: 20px;
+  display: inline-block;
+  width: 140px;
+  height: 140px;
+  text-align: center;
+  vertical-align: top;
+  position: relative;
+}
+
+.check-icon-container {
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #81C70C;
+}
+
+.checkbox {
+  margin-top: 9px;
+}
+
+.test-type {
+  font-size: 1.2em;
+  color: #565656;
+  font-weight: 500;
+}
+
+.point-sizes {
+  margin-top: 7px;
+  font-weight: 300;
+  font-size: .65em;
+  color: #565656;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.last {
+  margin-right: 0;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+footer span {
+  font-family: 'AbrilFatFace-Regular', sans-serif;
+}
