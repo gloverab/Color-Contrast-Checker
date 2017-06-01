@@ -1,15 +1,12 @@
 $(document).ready(function() {
   attachListeners()
-  setGlobalColors()
   setGlobalVars()
+  setGlobalColors()
 })
 
 function attachListeners() {
-  $('#foreground-input').on('input', function() {
-    handleForegroundTyping()
-  })
-  $('#background-input').on('input', function() {
-    handleBackgroundTyping()
+  $('.text-color').on('input', function() {
+    handleTyping(event)
   })
   $('#foreground-color-picker').on('input', function() {
     handleForegroundPicker(event)
@@ -28,11 +25,6 @@ function attachListeners() {
   })
 }
 
-function setGlobalColors() {
-  foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
-  backgroundColor = document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
-}
-
 function setGlobalVars() {
   backgroundLum = getLum(hexToRgb("#F9F9F9"))
   foregroundLum = getLum(hexToRgb("#030303"))
@@ -48,18 +40,30 @@ function setGlobalVars() {
   aaaSmallIcon = document.getElementById("aaa-small-icon")
 }
 
+function setGlobalColors() {
+  foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
+  backgroundColor = document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
+  foregroundLum = getLum(hexToRgb(foregroundColor))
+  backgroundLum = getLum(hexToRgb(backgroundColor))
+}
+
 // I think the 'handleTyping' functions as well as the 'handlePicker' functions
 // will probably end up being consolidated, (I.E. instead of having 2 for back and
 // 2 for front, just have 2 total that each respond to whichever event called it.)
 
-// Foreground stuff
+// Typing hex or color in to either
 
-function handleForegroundTyping() {
-  $('body, h1, h2, h3').css({"color": $('#foreground-input').val()})
+function handleTyping(event) {
+  var targetId = event.target.id.substr(0,10)
+  targetId === 'foreground' ?
+  $('body, h1, h2, h3').css({"color": $('#foreground-input').val()}) :
+  $('body').css({"background-color": $('#background-input').val()})
+
   setGlobalColors()
-  foregroundLum = getLum(hexToRgb(foregroundColor))
   setRatio()
 }
+
+// Foreground ColorWheel/Picker
 
 function handleForegroundPicker(event) {
   foregroundColor = event.currentTarget.value
@@ -69,14 +73,7 @@ function handleForegroundPicker(event) {
   setRatio()
 }
 
-// Background stuff
-
-function handleBackgroundTyping() {
-  $('body').css({"background-color": $('#background-input').val()})
-  setGlobalColors()
-  backgroundLum = getLum(hexToRgb(backgroundColor))
-  setRatio()
-}
+// Background ColorWheel/Picker
 
 function handleBackgroundPicker(event) {
   backgroundColor = event.currentTarget.value
@@ -97,6 +94,10 @@ function blurInput(event) {
   event.currentTarget.parentElement.style.cssText = ''
   event.currentTarget.parentElement.firstElementChild.style.cssText = ''
 }
+
+
+// Formulas, algorithms, and the things that make the app work
+// outside of just being colorful
 
 function ratioChecker() {
   // There is absolutely a better way to implement the below function,
@@ -141,8 +142,6 @@ function ratioChecker() {
   }
 }
 
-// Formulas and tedius stuff
-
 function setRatio() {
   var higherLum = Math.max(foregroundLum, backgroundLum)
   var lowerLum = Math.min(foregroundLum, backgroundLum)
@@ -185,3 +184,30 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16)
     } : null
 }
+
+
+
+// Graveyard
+// Phased out functions that have been replaced or refactored.
+// Keeping them around just in case!
+
+// $('#foreground-input').on('input', function() {
+//   handleForegroundTyping()
+// })
+// $('#background-input').on('input', function() {
+//   handleBackgroundTyping()
+// })
+
+// function handleBackgroundTyping() {
+//   $('body').css({"background-color": $('#background-input').val()})
+//   setGlobalColors()
+//   backgroundLum = getLum(hexToRgb(backgroundColor))
+//   setRatio()
+// }
+
+// function handleForegroundTyping() {
+//   $('body, h1, h2, h3').css({"color": $('#foreground-input').val()})
+//   setGlobalColors()
+//   foregroundLum = getLum(hexToRgb(foregroundColor))
+//   setRatio()
+// }

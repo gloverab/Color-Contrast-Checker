@@ -1,6 +1,5 @@
-/*Disclaimer!!! This is currently completely unresponsive. It has
-also only been tested in CHROME. Will update and optimize for Firefox
-and Safari in the nearish future, maybe.*/
+/*This has only been tested in Google Chrome. Will update and optimize
+for Firefox and Safari in the nearish future, maybe.*/
 
 /*The global styles especially could perhaps use some consolidation,
 although each element is pretty unique. I'd like to toy around with it.*/
@@ -160,6 +159,7 @@ label {
 footer {
   margin-top: 40px;
   text-align: center;
+
 }
 
 footer a::after {
