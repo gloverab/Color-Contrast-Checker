@@ -461,10 +461,6 @@ function hslToHex(event) {
 //     return [h, s, l];
 // }
 
-
-
-
-
 function rgb2hsv (r,g,b) {
  var computedH = 0;
  var computedS = 0;
