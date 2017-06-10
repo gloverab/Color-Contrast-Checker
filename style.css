@@ -336,11 +336,24 @@ update in days to come.*/
   }
 
   .input-div {
-    margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
   }
 
-  .color-picker {
+  .input-container {
+    margin-bottom: 10px;
+  }
+
+  .js-color-picker {
+    text-align: center;
     margin-right: 0;
+    display: inline-block;
+    position: relative;
+  }
+
+  .swatch {
+    display: inline-block;
   }
 
   .result-box {
