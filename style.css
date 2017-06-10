@@ -88,6 +88,7 @@ label {
 
 .input-div {
   display: inline-block;
+  vertical-align: bottom;
 }
 
 .input-container {
@@ -100,11 +101,8 @@ label {
   max-height: 52px;
 }
 
-.color-picker {
-  vertical-align: bottom;
-  width: 52px;
-  height: 52px;
-  margin-right: 16px;
+#background-color-picker {
+  margin-right: 0;
 }
 
 .result-boxes {
@@ -178,6 +176,143 @@ footer a:hover::after {
 footer span {
   font-family: 'AbrilFatFace-Regular', sans-serif;
 }
+
+/*Styles for JS COLOR PICKER*/
+
+.js-color-picker {
+  margin-right: 16px;
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+}
+
+.color-picker__overlay {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  background: black;
+  z-index: 0;
+  opacity: 0;
+}
+
+.color-picker__flyout {
+  width: 240px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.12);
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  position: absolute;
+  bottom: -170px;
+  left: -100px;
+  z-index: 2;
+}
+
+.color-picker__inner {
+  padding: 1.5rem 1rem;
+}
+
+.color-chip {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 4px 4px 0 0;
+}
+
+.color-chip__subtitle {
+  margin-top: 0.5rem;
+  opacity: 0.7;
+  font-weight: normal;
+  font-size: 15px;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.color-chip__title {
+  color: white;
+  margin: 0;
+  font-size: 50px;
+  letter-spacing: 4px;
+  font-family: Helvetica Neue;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.control {
+  width: 100%;
+  height: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.control + .control {
+  margin-top: 1rem;
+}
+
+.control input {
+  width: 100%;
+  margin: 0;
+}
+
+.control input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+.control input[type=range]:focus {
+  outline: none;
+}
+
+.control input[type=range]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.control input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #ddd;
+  height: 20px;
+  width: 20px;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12);
+  margin-top: -4px;
+}
+
+.swatch {
+  width: 42px;
+  height: 42px;
+  border: 4px solid white;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.swatch:hover {
+  border: 4px solid white;
+  opacity: 0.8;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
+}
+
+.pop-enter-active,
+.pop-leave-active {
+  transition: transform .3s, opacity .5s;
+  transition-timing-function: cubic-bezier(.8, .3, 0.25, 1.2);
+  transform: scale(1);
+}
+
+.pop-enter,
+.pop-leave-active {
+  opacity: 0;
+  transform: scale(0);
+}
+
 
 /*This barely does anything other than make it not a TOTAL eyesore. Will
 update in days to come.*/

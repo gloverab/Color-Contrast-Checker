@@ -8,6 +8,7 @@
 
   <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto:300,400,500,600,700" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.min.js"></script>
   <script type="text/javascript" src="scripts/main.js"></script>
 </head>
 <body>
@@ -22,18 +23,23 @@
         <div class="foreground input-div">
           <label>Foreground Color</label><br>
           <div class="input-container bordered" id="foreground-input-container">
-            <span>#</span><input type="text" class="text-color" id="foreground-input">
+            <span>#</span>
+            <input type="text" class="text-color" id="foreground-input">
           </div>
-          <input type="color" class="color-picker bordered" id="foreground-color-picker">
+          <div id="js-foreground-color-picker" class="input-div">
+            <js-color-picker :change="updateColor" id="foreground-color-picker"></js-color-picker>
+          </div>
         </div>
 
-        <div class="background input-div">
+        <div class="background input-div last">
           <label>Background Color</label><br>
           <div class="input-container bordered">
             <span>#</span>
             <input type="text" class="text-color" id="background-input">
           </div>
-          <input type="color" class="color-picker bordered last" id="background-color-picker">
+          <div id="js-background-color-picker" class="input-div">
+            <js-color-picker :change="updateColor" class="last" id="background-color-picker"></js-color-picker>
+          </div>
         </div>
 
       </div>
@@ -84,4 +90,30 @@
     </div>
   </div>
 </body>
+
+<template id="color-picker-template">
+
+  <div class="js-color-picker">
+    <div class="color-picker__overlay" v-if="isVisible" v-on:click="hide"></div>
+    <transition name="pop">
+      <div class="color-picker__flyout" v-if="isVisible">
+        <div class="color-chip" v-bind:style="{'background': color}">
+        </div>
+        <div class="color-picker__inner">
+          <div class="control" v-bind:style="gradientH">
+            <input type="range" min="0" max="360" v-model="h" />
+          </div>
+          <div class="control" v-bind:style="gradientS">
+            <input type="range" min="0" max="100" v-model="s" />
+          </div>
+          <div class="control" v-bind:style="gradientL">
+            <input type="range" min="0" max="100" v-model="l" />
+          </div>
+        </div>
+      </div>
+    </transition>
+    <div class="swatch" v-bind:style="{'background': color}" v-on:click="toggle"></div>
+  </div>
+</template>
+
 </html>

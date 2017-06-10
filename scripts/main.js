@@ -2,7 +2,195 @@ $(document).ready(function() {
   attachListeners()
   setGlobalVars()
   setGlobalColors()
+  registerVue()
 })
+
+// Registering the Vue component for the color pickers
+
+function registerVue() {
+
+  Vue.component("js-color-picker", {
+    template: "#color-picker-template",
+    props: ["change", "initial"],
+    data: function() {
+      return {
+        isVisible: false,
+        h: 0,
+        s: 0,
+        l: 1
+      }
+    },
+    computed: {
+      color: function() {
+        var hsl = hsb2hsl(parseFloat(this.h) / 360, parseFloat(this.s) / 100, parseFloat(this.l) / 100)
+
+        var c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%";
+
+        var s = "hsl(" + c + ")";
+        this.change({
+          color: s
+        });
+        return s;
+      },
+      colorString: function() {
+        var c = this.h + ", " + this.s + "%, " + this.l + "%"
+        return c;
+      },
+      gradientH: function() {
+        var stops = [];
+        for (var i = 0; i < 7; i++) {
+          var h = i * 60;
+
+          var hsl = hsb2hsl(parseFloat(h / 360), parseFloat(this.s) / 100, parseFloat(this.l / 100))
+
+          var c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%"
+          stops.push("hsl(" + c + ")")
+        }
+
+        return {
+          backgroundImage: "linear-gradient(to right, " + stops.join(', ') + ")"
+        }
+      },
+      gradientS: function() {
+        var stops = [];
+        var c;
+        var hsl = hsb2hsl(parseFloat(this.h / 360), 0, parseFloat(this.l / 100))
+        c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%"
+        stops.push("hsl(" + c + ")")
+
+        var hsl = hsb2hsl(parseFloat(this.h / 360), 1, parseFloat(this.l / 100))
+        c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%"
+        stops.push("hsl(" + c + ")")
+
+        return {
+          backgroundImage: "linear-gradient(to right, " + stops.join(', ') + ")"
+        }
+      },
+
+      gradientL: function() {
+        var stops = [];
+        var c;
+
+        var hsl = hsb2hsl(parseFloat(this.h / 360), 0, 0)
+        c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%"
+        stops.push("hsl(" + c + ")")
+
+        var hsl = hsb2hsl(parseFloat(this.h / 360), parseFloat(this.s / 100), 1)
+
+        c = hsl.h + ", " + hsl.s + "%, " + hsl.l + "%"
+        stops.push("hsl(" + c + ")")
+
+        return {
+          backgroundImage: "linear-gradient(to right, " + stops.join(', ') + ")"
+
+        }
+      }
+    },
+    methods: {
+      show: function() {
+        this.isVisible = true;
+      },
+      hide: function() {
+        this.isVisible = false;
+      },
+      toggle: function() {
+        this.isVisible = !this.isVisible;
+      }
+    },
+  })
+
+  vueForeground = new Vue({
+    el: "#js-foreground-color-picker",
+    data: function () {
+      return {
+        color: ''
+      }
+    },
+    methods: {
+      updateColor: function(event) {
+        this.color = event.color;
+        if ($(".color-chip").length != 0) {
+          handleForegroundPicker(event)
+        }
+      },
+      updateColorFromType: function() {
+        rgbForeground = hexToRgb(foregroundColor)
+        // $('.swatch')[0].style.background = rgbForeground
+
+        let r = rgbForeground.r
+        let g = rgbForeground.g
+        let b = rgbForeground.b
+
+        hslForeground = rgb2hsv(r,g,b)
+
+        this.$children[0].$vnode.elm.__vue__.h = hslForeground[0]
+        this.$children[0].$vnode.elm.__vue__.s = hslForeground[1]*100
+        this.$children[0].$vnode.elm.__vue__.l = hslForeground[2]*100
+
+      }
+    }
+  })
+
+  vueBackground = new Vue({
+    el: "#js-background-color-picker",
+    data: function () {
+      return {
+        color: ''
+      }
+    },
+    methods: {
+      updateColor: function(event) {
+        this.color = event.color;
+        if ($(".color-chip").length != 0) {
+          handleBackgroundPicker(event)
+        }
+      },
+      updateColorFromType: function() {
+        rgbBackground = hexToRgb(backgroundColor)
+
+        let r = rgbBackground.r
+        let g = rgbBackground.g
+        let b = rgbBackground.b
+
+        hslBackground = rgb2hsv(r,g,b)
+
+        this.$children[0].$vnode.elm.__vue__.h = hslBackground[0]
+        this.$children[0].$vnode.elm.__vue__.s = hslBackground[1]*100
+        this.$children[0].$vnode.elm.__vue__.l = hslBackground[2]*100
+
+      }
+    }
+  })
+
+  function hsb2hsl(h, s, b) {
+    var hsl = {
+      h: h
+    };
+    hsl.l = (2 - s) * b;
+    hsl.s = s * b;
+
+    if (hsl.l <= 1 && hsl.l > 0) {
+      hsl.s /= hsl.l;
+    } else {
+      hsl.s /= 2 - hsl.l;
+    }
+
+    hsl.l /= 2;
+
+    if (hsl.s > 1) {
+      hsl.s = 1;
+    }
+
+    if (!hsl.s > 0) hsl.s = 0
+
+
+    hsl.h *= 360;
+    hsl.s *= 100;
+    hsl.l *= 100;
+
+    return hsl;
+  }
+}
 
 function attachListeners() {
   $('.text-color').on('input', function() {
@@ -40,9 +228,19 @@ function setGlobalVars() {
   aaaSmallIcon = document.getElementById("aaa-small-icon")
 }
 
+// THIS ONE WORKS WITH THE OLD HTML5 COLOR PICKER
+
+// function setGlobalColors() {
+//   foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
+//   backgroundColor = document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
+//   foregroundLum = getLum(hexToRgb(foregroundColor))
+//   backgroundLum = getLum(hexToRgb(backgroundColor))
+// }
+
+
 function setGlobalColors() {
-  foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
-  backgroundColor = document.getElementById("background-color-picker").value = rgbToHex($('body').css('background-color'))
+  foregroundColor = rgbToHex($('h1').css('color'))
+  backgroundColor = rgbToHex($('body').css('background-color'))
   foregroundLum = getLum(hexToRgb(foregroundColor))
   backgroundLum = getLum(hexToRgb(backgroundColor))
 }
@@ -55,31 +253,46 @@ function setGlobalColors() {
 
 function handleTyping(event) {
   var targetId = event.target.id.substr(0,10)
-  targetId === 'foreground' ?
-  $('body, h1, h2, h3').css({"color": $('#foreground-input').val()}) :
-  $('body').css({"background-color": $('#background-input').val()})
+  targetId === 'foreground' ? foregroundType() : backgroundType()
 
-  setGlobalColors()
   setRatio()
+}
+
+function foregroundType() {
+  $('body, h1, h2, h3').css({"color": $('#foreground-input').val()})
+  setGlobalColors()
+  vueForeground.updateColorFromType()
+}
+
+function backgroundType() {
+  $('body').css({"background-color": $('#background-input').val()})
+  setGlobalColors()
+  vueBackground.updateColorFromType()
 }
 
 // Foreground ColorWheel/Picker
 
 function handleForegroundPicker(event) {
-  foregroundColor = event.currentTarget.value
+  foregroundColor = hslToHex(event)
   foregroundLum = getLum(hexToRgb(foregroundColor))
+
   $('body, h1, h2, h3').css({"color": foregroundColor})
+
   document.getElementById('foreground-input').value = foregroundColor.substr(1)
+
   setRatio()
 }
 
 // Background ColorWheel/Picker
 
 function handleBackgroundPicker(event) {
-  backgroundColor = event.currentTarget.value
+  backgroundColor = hslToHex(event)
   backgroundLum = getLum(hexToRgb(backgroundColor))
+
   $('body').css({"background-color": backgroundColor})
+
   document.getElementById('background-input').value = backgroundColor.substr(1)
+
   setRatio()
 }
 
@@ -162,6 +375,9 @@ function getLum(rgbColor) {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
+
+//RGB to HEX functions
+
 function rgbToHex(rgb) {
     var total = rgb.toString().split(',');
     var r = total[0].substring(4);
@@ -176,6 +392,8 @@ function checkNumber(i){
     else return i;
 }
 
+// HEX to RGB function
+
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -183,6 +401,106 @@ function hexToRgb(hex) {
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
     } : null
+}
+
+// HSL to HEX function
+
+function hslToHex(event) {
+  let h = parseInt(event.color.split('(')[1].split(',')[0])
+  let s = parseFloat(event.color.split(', ')[1])
+  let l = parseFloat(event.color.split(', ')[2].slice(0,-1))
+
+  h /= 360;
+  s /= 100;
+  l /= 100;
+  let r, g, b;
+  if (s === 0) {
+    r = g = b = l; // achromatic
+  } else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  const toHex = x => {
+    const hex = Math.round(x * 255).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  };
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+
+//   function rgbToHsl(r, g, b){
+//     debugger
+//     r /= 255, g /= 255, b /= 255;
+//     var max = Math.max(r, g, b), min = Math.min(r, g, b);
+//     var h, s, l = (max + min) / 2;
+//
+//     if(max == min){
+//         h = s = 0; // achromatic
+//     }else{
+//         var d = max - min;
+//         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+//         switch(max){
+//             case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+//             case g: h = (b - r) / d + 2; break;
+//             case b: h = (r - g) / d + 4; break;
+//         }
+//         h *= 60;
+//     }
+//
+//     return [h, s, l];
+// }
+
+
+
+
+
+function rgb2hsv (r,g,b) {
+ var computedH = 0;
+ var computedS = 0;
+ var computedV = 0;
+
+ //remove spaces from input RGB values, convert to int
+ var r = parseInt( (''+r).replace(/\s/g,''),10 );
+ var g = parseInt( (''+g).replace(/\s/g,''),10 );
+ var b = parseInt( (''+b).replace(/\s/g,''),10 );
+
+ if ( r==null || g==null || b==null ||
+     isNaN(r) || isNaN(g)|| isNaN(b) ) {
+   alert ('Please enter numeric RGB values!');
+   return;
+ }
+ if (r<0 || g<0 || b<0 || r>255 || g>255 || b>255) {
+   alert ('RGB values must be in the range 0 to 255.');
+   return;
+ }
+ r=r/255; g=g/255; b=b/255;
+ var minRGB = Math.min(r,Math.min(g,b));
+ var maxRGB = Math.max(r,Math.max(g,b));
+
+ // Black-gray-white
+ if (minRGB==maxRGB) {
+  computedV = minRGB;
+  return [0,0,computedV];
+ }
+
+ // Colors other than black-gray-white:
+ var d = (r==minRGB) ? g-b : ((b==minRGB) ? r-g : b-r);
+ var h = (r==minRGB) ? 3 : ((b==minRGB) ? 1 : 5);
+ computedH = 60*(h - d/(maxRGB - minRGB));
+ computedS = (maxRGB - minRGB)/maxRGB;
+ computedV = maxRGB;
+ return [computedH,computedS,computedV];
 }
 
 
