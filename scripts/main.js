@@ -2,12 +2,14 @@ $(document).ready(function() {
   attachListeners()
   setGlobalVars()
   setGlobalColors()
-  registerVue()
+  registerVueComponent()
 })
 
-// Registering the Vue component for the color pickers
+// Registering the Vue component for the color pickers.
 
-function registerVue() {
+// The color picker component is a modified version of code originally written by Florian Schulz.
+
+function registerVueComponent() {
 
   Vue.component("js-color-picker", {
     template: "#color-picker-template",
@@ -99,6 +101,8 @@ function registerVue() {
     },
   })
 
+  //Foreground color picker component
+
   vueForeground = new Vue({
     el: "#js-foreground-color-picker",
     data: function () {
@@ -113,15 +117,17 @@ function registerVue() {
           handleForegroundPicker(event)
         }
       },
+
+      //Foreground color picker methods.
+
       updateColorFromType: function() {
         rgbForeground = hexToRgb(foregroundColor)
-        // $('.swatch')[0].style.background = rgbForeground
 
         let r = rgbForeground.r
         let g = rgbForeground.g
         let b = rgbForeground.b
 
-        hslForeground = rgb2hsv(r,g,b)
+        hslForeground = rgbToHsv(r,g,b)
 
         this.$children[0].$vnode.elm.__vue__.h = hslForeground[0]
         this.$children[0].$vnode.elm.__vue__.s = hslForeground[1]*100
@@ -131,6 +137,8 @@ function registerVue() {
     }
   })
 
+  //Background color picker component
+
   vueBackground = new Vue({
     el: "#js-background-color-picker",
     data: function () {
@@ -139,6 +147,9 @@ function registerVue() {
       }
     },
     methods: {
+
+      //Background color picker methods. Eventually would like to dry this up with ONE method on the parent component for both the foreground & background pickers.
+
       updateColor: function(event) {
         this.color = event.color;
         if ($(".color-chip").length != 0) {
@@ -152,7 +163,7 @@ function registerVue() {
         let g = rgbBackground.g
         let b = rgbBackground.b
 
-        hslBackground = rgb2hsv(r,g,b)
+        hslBackground = rgbToHsv(r,g,b)
 
         this.$children[0].$vnode.elm.__vue__.h = hslBackground[0]
         this.$children[0].$vnode.elm.__vue__.s = hslBackground[1]*100
@@ -228,7 +239,7 @@ function setGlobalVars() {
   aaaSmallIcon = document.getElementById("aaa-small-icon")
 }
 
-// THIS ONE WORKS WITH THE OLD HTML5 COLOR PICKER
+// THIS ONE WORKS WITH THE OLD VERSION / HTML5 COLOR PICKER
 
 // function setGlobalColors() {
 //   foregroundColor = document.getElementById("foreground-color-picker").value = rgbToHex($('h1').css('color'))
@@ -244,10 +255,6 @@ function setGlobalColors() {
   foregroundLum = getLum(hexToRgb(foregroundColor))
   backgroundLum = getLum(hexToRgb(backgroundColor))
 }
-
-// I think the 'handleTyping' functions as well as the 'handlePicker' functions
-// will probably end up being consolidated, (I.E. instead of having 2 for back and
-// 2 for front, just have 2 total that each respond to whichever event called it.)
 
 // Typing hex or color in to either
 
@@ -438,9 +445,9 @@ function hslToHex(event) {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
+// RGB to HSV function
 
-
-function rgb2hsv (r,g,b) {
+function rgbToHsv (r,g,b) {
  var computedH = 0;
  var computedS = 0;
  var computedV = 0;

@@ -54,6 +54,23 @@ input:focus {
   outline: none;
 }
 
+::-webkit-input-placeholder {
+   font-style: italic;
+   color: #E8E8E8;
+}
+:-moz-placeholder {
+   font-style: italic;
+   color: #E8E8E8;
+}
+::-moz-placeholder {
+   font-style: italic;
+   color: #E8E8E8;
+}
+:-ms-input-placeholder {
+   font-style: italic;
+   color: #E8E8E8;
+}
+
 label {
   font-size: .75em;
 }
