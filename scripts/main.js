@@ -222,6 +222,9 @@ function attachListeners() {
   $('#ratio-to-change').change(function() {
     ratioChecker()
   })
+  $('#make-it-work').on('click', function() {
+    makeItWork(event)
+  })
 }
 
 function setGlobalVars() {
@@ -313,6 +316,24 @@ function focusField(event) {
 function blurInput(event) {
   event.currentTarget.parentElement.style.cssText = ''
   event.currentTarget.parentElement.firstElementChild.style.cssText = ''
+}
+
+
+// Make it work - STILL IN PROGRESS!!!!!
+
+function makeItWork(event) {
+  event.preventDefault()
+  if (currentRatio >= 7.1) {
+    event.target.innerHTML += " - Hey! It already works, silly!"
+  } else {
+    let foregroundBrightness = parseInt(vueForeground.$children[0].$vnode.elm.__vue__.l)
+    let backgroundBrightness = parseInt(vueBackground.$children[0].$vnode.elm.__vue__.l)
+
+    let brighter = Math.max(foregroundBrightness, backgroundBrightness)
+    let dimmer = Math.min(foregroundBrightness, backgroundBrightness)
+
+    for (let i = currentRatio; ;)
+  }
 }
 
 
