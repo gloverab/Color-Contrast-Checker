@@ -332,7 +332,6 @@ function makeItWork(event) {
     let brighter = Math.max(foregroundBrightness, backgroundBrightness)
     let dimmer = Math.min(foregroundBrightness, backgroundBrightness)
 
-    for (let i = currentRatio; ;)
   }
 }
 
