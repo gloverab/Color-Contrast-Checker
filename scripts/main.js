@@ -3,6 +3,13 @@ $(document).ready(function() {
   setGlobalVars()
   setGlobalColors()
   registerVueComponent()
+
+  const uri = window.location.href.split("?")[1]
+  if (uri) {
+    handleColorsFromURL()
+  } else {
+    
+  }
 })
 
 // Registering the Vue component for the color pickers.
@@ -228,7 +235,7 @@ function attachListeners() {
 }
 
 function setGlobalVars() {
-  backgroundLum = getLum(hexToRgb("#F9F9F9"))
+  backgroundLum = getLum(hexToRgb("#ff0000"))
   foregroundLum = getLum(hexToRgb("#030303"))
 
   aaLarge = $("#aa-large")
@@ -251,12 +258,28 @@ function setGlobalVars() {
 //   backgroundLum = getLum(hexToRgb(backgroundColor))
 // }
 
+function handleColorsFromURL() {
+  const uri = window.location.href.split("?")[1]
+  const terms = uri.split("&")
+  foregroundColor = terms[0].replace('fc=', '')
+  backgroundColor = terms[1].replace('bc=', '')
+  foregroundLum = getLum(hexToRgb(foregroundColor))
+  backgroundLum = getLum(hexToRgb(backgroundColor))
+
+  $('body, h1, h2, h3').css({"color": foregroundColor})
+  $('body').css({"background-color": backgroundColor})
+
+  document.getElementById('foreground-input').value = foregroundColor.substr(1)
+  document.getElementById('background-input').value = backgroundColor.substr(1)
+  foregroundType()
+  backgroundType()
+  setRatio()
+}
+
 
 function setGlobalColors() {
   foregroundColor = rgbToHex($('h1').css('color'))
   backgroundColor = rgbToHex($('body').css('background-color'))
-  foregroundLum = getLum(hexToRgb(foregroundColor))
-  backgroundLum = getLum(hexToRgb(backgroundColor))
 }
 
 // Typing hex or color in to either
@@ -280,6 +303,10 @@ function backgroundType() {
   vueBackground.updateColorFromType()
 }
 
+const updateUrl = () => {
+  window.history.replaceState(null, null, `?fc=${foregroundColor}&bc=${backgroundColor}`)
+}
+
 // Foreground ColorWheel/Picker
 
 function handleForegroundPicker(event) {
@@ -289,8 +316,8 @@ function handleForegroundPicker(event) {
   $('body, h1, h2, h3').css({"color": foregroundColor})
 
   document.getElementById('foreground-input').value = foregroundColor.substr(1)
-
   setRatio()
+  updateUrl()
 }
 
 // Background ColorWheel/Picker
@@ -302,8 +329,8 @@ function handleBackgroundPicker(event) {
   $('body').css({"background-color": backgroundColor})
 
   document.getElementById('background-input').value = backgroundColor.substr(1)
-
   setRatio()
+  updateUrl()
 }
 
 // Focus states
