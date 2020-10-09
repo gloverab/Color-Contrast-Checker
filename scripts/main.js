@@ -3,13 +3,7 @@ $(document).ready(function() {
   setGlobalVars()
   setGlobalColors()
   registerVueComponent()
-
-  const uri = window.location.href.split("?")[1]
-  if (uri) {
-    handleColorsFromURL()
-  } else {
-    
-  }
+  handleColorsFromURL()
 })
 
 // Registering the Vue component for the color pickers.
@@ -260,9 +254,14 @@ function setGlobalVars() {
 
 function handleColorsFromURL() {
   const uri = window.location.href.split("?")[1]
-  const terms = uri.split("&")
-  foregroundColor = terms[0].replace('fc=', '')
-  backgroundColor = terms[1].replace('bc=', '')
+  if (uri) {
+    const terms = uri.split("&")
+    foregroundColor = terms[0].replace('fc=', '')
+    backgroundColor = terms[1].replace('bc=', '')
+  } else {
+    foregroundColor = "#030303"
+    backgroundColor = "#F9F9F9"
+  }
   foregroundLum = getLum(hexToRgb(foregroundColor))
   backgroundLum = getLum(hexToRgb(backgroundColor))
 
