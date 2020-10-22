@@ -252,6 +252,24 @@ function setGlobalVars() {
 //   backgroundLum = getLum(hexToRgb(backgroundColor))
 // }
 
+function getThemedColors() {
+  const monthNum = new Date().getMonth()
+  switch(monthNum) {
+    case 9:
+      foregroundColor = "#ff7033"
+      backgroundColor = "#030303"
+      $('#main-header').append(' 🎃')
+      break;
+    case 11:
+      foregroundColor = "#b00000"
+      backgroundColor = "#ffffff"
+      $('#main-header').append(' 🎅')
+    default:
+      foregroundColor = "#030303"
+      backgroundColor = "#F9F9F9"
+  }
+}
+
 function handleColorsFromURL() {
   const uri = window.location.href.split("?")[1]
   if (uri) {
@@ -259,8 +277,7 @@ function handleColorsFromURL() {
     foregroundColor = terms[0].replace('fc=', '')
     backgroundColor = terms[1].replace('bc=', '')
   } else {
-    foregroundColor = "#030303"
-    backgroundColor = "#F9F9F9"
+    getThemedColors()
   }
   foregroundLum = getLum(hexToRgb(foregroundColor))
   backgroundLum = getLum(hexToRgb(backgroundColor))
