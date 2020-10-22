@@ -258,12 +258,12 @@ function getThemedColors() {
     case 9:
       foregroundColor = "#ff7033"
       backgroundColor = "#030303"
-      $('#main-header').append(' 🎃')
+      $('#site-credits').append(' 🎃')
       break;
     case 11:
       foregroundColor = "#b00000"
       backgroundColor = "#ffffff"
-      $('#main-header').append(' 🎅')
+      $('#site-credits').append(' 🎅')
     default:
       foregroundColor = "#030303"
       backgroundColor = "#F9F9F9"
