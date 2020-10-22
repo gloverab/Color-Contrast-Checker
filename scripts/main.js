@@ -205,16 +205,16 @@ function registerVueComponent() {
 }
 
 function attachListeners() {
-  $('.text-color').on('input', function() {
+  $('.text-color').on('input', function(event) {
     handleTyping(event)
   })
-  $('#foreground-color-picker').on('input', function() {
+  $('#foreground-color-picker').on('input', function(event) {
     handleForegroundPicker(event)
   })
-  $('#background-color-picker').on('input', function() {
+  $('#background-color-picker').on('input', function(event) {
     handleBackgroundPicker(event)
   })
-  $('.text-color').focus(function() {
+  $('.text-color').focus(function(event) {
     focusField(event)
   })
   $('input').blur(function(event) {
@@ -223,7 +223,7 @@ function attachListeners() {
   $('#ratio-to-change').change(function() {
     ratioChecker()
   })
-  $('#make-it-work').on('click', function() {
+  $('#make-it-work').on('click', function(event) {
     makeItWork(event)
   })
 }
@@ -285,20 +285,26 @@ function setGlobalColors() {
 
 function handleTyping(event) {
   var targetId = event.target.id.substr(0,10)
-  targetId === 'foreground' ? foregroundType() : backgroundType()
-
+  if (targetId === 'foreground') {
+    foregroundType()
+  } else {
+    backgroundType()
+  }
+  updateUrl()
   setRatio()
 }
 
 function foregroundType() {
   $('body, h1, h2, h3').css({"color": $('#foreground-input').val()})
   setGlobalColors()
+  foregroundLum = getLum(hexToRgb(foregroundColor))
   vueForeground.updateColorFromType()
 }
 
 function backgroundType() {
   $('body').css({"background-color": $('#background-input').val()})
   setGlobalColors()
+  backgroundLum = getLum(hexToRgb(backgroundColor))
   vueBackground.updateColorFromType()
 }
 
@@ -411,7 +417,6 @@ function ratioChecker() {
 function setRatio() {
   var higherLum = Math.max(foregroundLum, backgroundLum)
   var lowerLum = Math.min(foregroundLum, backgroundLum)
-
   currentRatio = parseFloat(((higherLum+.05)/(lowerLum+.05)).toFixed(2))
 
   $('#ratio-to-change').html(((higherLum+.05)/(lowerLum+.05)).toFixed(2))
