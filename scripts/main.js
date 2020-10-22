@@ -6,6 +6,8 @@ $(document).ready(function() {
   handleColorsFromURL()
 })
 
+let lastFulfilled = false
+
 // Registering the Vue component for the color pickers.
 
 // The color picker component is a modified version of code originally written by Florian Schulz.
@@ -264,6 +266,7 @@ function getThemedColors() {
       foregroundColor = "#b00000"
       backgroundColor = "#ffffff"
       $('#site-credits').append(' 🎅')
+      break;
     default:
       foregroundColor = "#030303"
       backgroundColor = "#F9F9F9"
@@ -401,6 +404,10 @@ function ratioChecker() {
     aaSmallIcon.setAttribute("src","images/x.svg")
     aaaLargeIcon.setAttribute("src","images/x.svg")
     aaaSmallIcon.setAttribute("src","images/x.svg")
+    if (lastFulfilled) {
+      $(".confetti").remove();
+      lastFulfilled = false
+    }
   } else if (currentRatio < 4.5) {
     aaLarge.css({"background-color":"#81C70C"})
     aaSmall.css({"background-color":"#CF3737"})
@@ -410,6 +417,10 @@ function ratioChecker() {
     aaSmallIcon.setAttribute("src","images/x.svg")
     aaaLargeIcon.setAttribute("src","images/x.svg")
     aaaSmallIcon.setAttribute("src","images/x.svg")
+    if (lastFulfilled) {
+      $(".confetti").remove();
+      lastFulfilled = false
+    }
   } else if (currentRatio < 7.1) {
     aaLarge.css({"background-color":"#81C70C"})
     aaSmall.css({"background-color":"#81C70C"})
@@ -419,6 +430,10 @@ function ratioChecker() {
     aaSmallIcon.setAttribute("src","images/check.svg")
     aaaLargeIcon.setAttribute("src","images/check.svg")
     aaaSmallIcon.setAttribute("src","images/x.svg")
+    if (lastFulfilled) {
+      $(".confetti").remove();
+      lastFulfilled = false
+    }
   } else {
     aaLarge.css({"background-color":"#81C70C"})
     aaSmall.css({"background-color":"#81C70C"})
@@ -428,6 +443,10 @@ function ratioChecker() {
     aaSmallIcon.setAttribute("src","images/check.svg")
     aaaLargeIcon.setAttribute("src","images/check.svg")
     aaaSmallIcon.setAttribute("src","images/check.svg")
+    if (!lastFulfilled) {
+      confetti()
+      lastFulfilled = true
+    }
   }
 }
 
@@ -579,3 +598,32 @@ function rgbToHsv (r,g,b) {
 //   foregroundLum = getLum(hexToRgb(foregroundColor))
 //   setRatio()
 // }
+
+function randomize(collection) {
+  var randomNumber = Math.floor(Math.random() * collection.length);
+  return collection[randomNumber]
+}
+
+function confetti() {
+  var $confettiItems = $('<div class="confetti"></div>'),    
+  colors = [
+      foregroundColor,
+      '#E9128C'
+  ],
+  height = 6.6,
+  width = 6.6;
+  
+  var scale, $confettiItem;
+
+  for(var i=0; i<100; i++) {
+    scale = Math.random() * 1.75 + 1;
+    $confettiItem = $('<svg class=\'confetti-item\' width=\'' + width * scale + '\' height=\'' + height * scale + '\' viewbox=\'0 0 ' + width + ' ' + height + '\'>\n  <use transform=\'rotate(' + Math.random() * 360 + ', ' + width / 2 + ', ' + height / 2 + ')\' xlink:href=\'#svg-confetti\' />\n</svg>');
+    $confettiItem.css({
+      'animation': Math.random() + .5 + 's ' + Math.random() * .5 + 's confettiFall ease-in both',
+      'color': randomize(colors),
+      'left': Math.random() * 100 + 'vw'
+    });
+    $confettiItems.append($confettiItem);
+  }
+  $('body').append($confettiItems)
+}

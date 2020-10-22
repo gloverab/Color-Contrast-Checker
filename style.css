@@ -383,3 +383,28 @@ update in days to come.*/
     margin-bottom: 20px;
   }
 }
+
+
+
+.confetti {
+  left: 0;
+  pointer-events: none ;
+  position: fixed;
+  top: 0;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  height: 100%;
+  width: 100%;
+}
+
+.confetti-item {
+  position: absolute;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100%); }
+  95% { animation-timing-function: ease-in-out; transform: translateY(calc(100vh - 55%)); }
+  100% { transform: translateY(calc(100vh - 65%)) }
+}
